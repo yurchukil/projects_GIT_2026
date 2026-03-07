@@ -1,14 +1,20 @@
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
 
-#include <QMainWindow>
+#include <QGraphicsScene>
+#include <QTimer>
 
-class GameScene : public QMainWindow
+class GameScene : public QGraphicsScene
 {
     Q_OBJECT
 
 public:
-    GameScene(QWidget *parent = nullptr);
-    ~GameScene();
+    explicit GameScene(QObject *parent = nullptr);
+
+private slots:
+    void tick();          // логіка гри (оновлення стану)
+
+private:
+    QTimer m_timer;       // ігровий таймер
 };
 #endif // GAMESCENE_H
