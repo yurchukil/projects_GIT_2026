@@ -8,7 +8,7 @@ GameScene::GameScene(QObject *parent)
 
     // приклад тестового об'єкта, щоб бачити сцену живою
     QGraphicsRectItem *box = new QGraphicsRectItem(0, 0, 50, 50);
-    box->setPos(200, 200);
+    box->setPos(0, 0);
     addItem(box);  box->setBrush(Qt::green);
 
     QPen pen(Qt::black); // колір
@@ -27,6 +27,64 @@ GameScene::GameScene(QObject *parent)
     QRectF r = m_text->boundingRect();
     m_text->setTransformOriginPoint(r.center());
     m_text->setPos(400, 300);
+
+
+
+
+
+    QPainterPath shield;
+
+    // 🔹 1. Основа "щита"
+    shield.moveTo(150, 120);
+    shield.lineTo(250, 120);
+    shield.quadTo(280, 170, 250, 240);
+    shield.lineTo(200, 280);
+    shield.lineTo(150, 240);
+    shield.quadTo(120, 170, 150, 120);
+    shield.closeSubpath();
+
+
+    // 🔹 2. Внутрішнє коло
+    QPainterPath circle;
+    circle.addEllipse(175, 150, 50, 50);
+
+
+    // 🔹 3. Дуга
+    QPainterPath arc;
+    arc.moveTo(170, 200);
+    arc.arcTo(170, 180, 60, 60, 180, 180);
+
+
+    // 🔹 4. Зірка
+    QPainterPath star;
+    star.moveTo(200, 160);
+    star.lineTo(205, 180);
+    star.lineTo(225, 180);
+    star.lineTo(210, 190);
+    star.lineTo(215, 210);
+    star.lineTo(200, 198);
+    star.lineTo(185, 210);
+    star.lineTo(190, 190);
+    star.lineTo(175, 180);
+    star.lineTo(195, 180);
+    star.closeSubpath();
+
+
+    // 🔹 5. Об’єднання
+    QPainterPath result = shield;
+    result.addPath(circle);
+    result.addPath(arc);
+
+    // 🔹 6. Вирізати зірку
+    result = result.subtracted(star);
+
+
+    // 🔹 7. Відображення
+    QGraphicsPathItem *item = new QGraphicsPathItem(result);
+    item->setPen(QPen(Qt::black, 2));
+    item->setBrush(QBrush(Qt::yellow));
+
+    addItem(item);
 
 
     //зображення
